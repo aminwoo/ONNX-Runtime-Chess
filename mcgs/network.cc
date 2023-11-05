@@ -5,7 +5,7 @@ Network::Network() : session(nullptr) {
 	session = Ort::Session(env, modelPath, Ort::SessionOptions{ nullptr });
 }
 
-float* Network::forward(InputPlanes planes) {
+std::vector<float*> Network::forward(InputPlanes planes) {
     auto input_name0 = session.GetInputNameAllocated(0, allocator);
     auto output_name0 = session.GetOutputNameAllocated(0, allocator);
     auto output_name1 = session.GetOutputNameAllocated(1, allocator);
@@ -41,5 +41,5 @@ float* Network::forward(InputPlanes planes) {
         output_names.data(),
         output_names.size());
     
-    return output_tensors[0].GetTensorMutableData<float>();
+    return { output_tensors[0].GetTensorMutableData<float>(), output_tensors[1].GetTensorMutableData<float>() };
 }

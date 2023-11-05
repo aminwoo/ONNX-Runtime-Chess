@@ -1,5 +1,4 @@
 #include "types.h"
-#include <iostream>
 
 //Lookup tables of square names in algebraic chess notation
 const char* SQSTR[65] = {

@@ -33,6 +33,12 @@
     <ClCompile Include="network.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="search.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="node.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="types.h">
@@ -53,10 +59,18 @@
     <ClInclude Include="policy.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="node.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="search.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x64\native\onnxruntime.dll" />
-    <None Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x64\native\onnxruntime_providers_shared.dll" />
+    <None Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x64\native\onnxruntime_providers_shared.dll">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

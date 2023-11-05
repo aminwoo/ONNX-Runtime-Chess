@@ -14,5 +14,5 @@ private:
 
 public:
 	Network();
-	float* forward(InputPlanes planes); 
+	std::vector<float*> forward(InputPlanes planes); 
 };

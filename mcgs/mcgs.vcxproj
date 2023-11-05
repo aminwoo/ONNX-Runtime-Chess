@@ -23,15 +23,19 @@
     <ClCompile Include="encoder.cc" />
     <ClCompile Include="main.cc" />
     <ClCompile Include="network.cc" />
+    <ClCompile Include="node.cc" />
     <ClCompile Include="position.cc" />
+    <ClCompile Include="search.cc" />
     <ClCompile Include="tables.cc" />
     <ClCompile Include="types.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="encoder.h" />
     <ClInclude Include="network.h" />
+    <ClInclude Include="node.h" />
     <ClInclude Include="policy.h" />
     <ClInclude Include="position.h" />
+    <ClInclude Include="search.h" />
     <ClInclude Include="tables.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>

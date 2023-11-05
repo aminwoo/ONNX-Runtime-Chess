@@ -4,6 +4,7 @@
 #include "network.h"
 #include "tables.h"
 #include "types.h"
+#include "search.h"
 
 #include <sstream>
 #include <chrono>
@@ -50,23 +51,18 @@ void position(istringstream& is) {
 		}
 	}
 	else if (token == "fen") {
-
+		std::string fen; 
+		while (is >> token) {
+			fen += token + " ";
+		}
+		Position::set(fen, p);
+		history.push_back(p);
 	}
 }
 
 void go(istringstream& is) {
-	Network nn;
-	InputPlanes planes = EncodePositionForNN(history);
-
-	float* policy = nn.forward(planes);
-	auto it = max_element(policy, policy + 1858);
-	cout << "bestmove ";
-	if (history.back().turn()) {
-		cout << mirror_uci(policy_index[it - policy]) << '\n';
-	}
-	else {
-		cout << policy_index[it - policy] << '\n';
-	}
+	Search* t = new Search;
+	run_search_thread(t, history);
 }
 
 
@@ -79,6 +75,7 @@ int main() {
 	do {
 		if (!getline(cin, cmd))
 			cmd = "quit";
+		cout << cmd << '\n'; 
 
 		istringstream is(cmd);
 

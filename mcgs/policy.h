@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-std::vector<std::string> policy_index = {
+const std::vector<std::string> policy_index = {
     "a1b1",
     "a1c1",
     "a1d1",
