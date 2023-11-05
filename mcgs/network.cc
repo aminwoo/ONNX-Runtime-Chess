@@ -1,8 +1,13 @@
 #include "network.h"
 
 Network::Network() : session(nullptr) {
-	auto modelPath = L"C:\\Users\\benwo\\PycharmProjects\\blunderfish\\src\\model.onnx"; 
-	session = Ort::Session(env, modelPath, Ort::SessionOptions{ nullptr });
+    Ort::SessionOptions session_options;
+    OrtCUDAProviderOptions cuda_options;
+    cuda_options.device_id = 0;
+    session_options.AppendExecutionProvider_CUDA(cuda_options);
+
+    auto modelPath = L"C:\\Users\\benwo\\PycharmProjects\\blunderfish\\src\\model.onnx";
+    session = Ort::Session(env, modelPath, session_options);
 }
 
 std::vector<float*> Network::forward(InputPlanes planes) {
