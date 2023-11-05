@@ -75,7 +75,6 @@ int main() {
 	do {
 		if (!getline(cin, cmd))
 			cmd = "quit";
-		cout << cmd << '\n'; 
 
 		istringstream is(cmd);
 

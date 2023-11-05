@@ -3,7 +3,7 @@
 Node* Node::get_best_child() {
     Node* best_child = nullptr;
     float best_value = -std::numeric_limits<float>::infinity();
-    float c = 1.0;
+    float c = sqrt(2.0);
 
     size_t numChildren = children.size();
     for (size_t i = 0; i < numChildren; i++) {
