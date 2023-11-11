@@ -688,3 +688,23 @@ private:
 	Move list[218];
 	Move* last;
 };
+
+class History {
+private:
+	std::vector<Position> positions_; 
+public:
+	History() = default; 
+	History(const History& other) = default; 
+
+	Position& operator[](size_t index) { return positions_[index]; }
+
+	Position& last() { return positions_.back(); }
+
+	int length() const { return positions_.size(); }
+
+	void push(Move m);
+
+	void pop() { positions_.pop_back(); }
+
+	void reset();
+};

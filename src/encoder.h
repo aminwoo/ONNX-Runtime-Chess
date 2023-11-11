@@ -24,5 +24,5 @@ constexpr int kPlanesPerBoard = 13;
 constexpr int kAuxPlaneBase = kPlanesPerBoard * kMoveHistory;
 
 // Encodes the last position in history for the neural network request.
-InputPlanes EncodePositionForNN(std::vector<Position>& history);
+InputPlanes EncodePositionForNN(History& history);
 

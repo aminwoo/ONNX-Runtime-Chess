@@ -3,10 +3,11 @@
 Network::Network() : session(nullptr) {
     Ort::SessionOptions session_options;
     int device_id = 0;
-    Ort::ThrowOnError(OrtSessionOptionsAppendExecutionProvider_Tensorrt(session_options, device_id));
+    //Ort::ThrowOnError(OrtSessionOptionsAppendExecutionProvider_Tensorrt(session_options, device_id));
     Ort::ThrowOnError(OrtSessionOptionsAppendExecutionProvider_CUDA(session_options, device_id));
     auto model_path = "models/model.onnx";
     session = Ort::Session(env, model_path, session_options);
+    forward(InputPlanes(112)); 
 }
 
 std::vector<float*> Network::forward(InputPlanes planes) {

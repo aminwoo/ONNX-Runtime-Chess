@@ -130,4 +130,19 @@ void Position::move_piece_quiet(Square from, Square to) {
 	board[from] = NO_PIECE;
 }
 
+void History::push(Move m) {
+	positions_.emplace_back(last());
+	if (last().turn()) {
+		last().play<BLACK>(m);
+	}
+	else {
+		last().play<WHITE>(m);
+	}
+}
 
+void History::reset() {
+	positions_.clear(); 
+	Position p;
+	Position::set("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -", p);
+	positions_.emplace_back(p);
+}

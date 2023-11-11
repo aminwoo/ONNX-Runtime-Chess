@@ -35,7 +35,7 @@ Node* Search::get_root_node() {
     return root;
 }
 
-void Search::run_iteration(std::vector<Position>& history) {
+void Search::run_iteration(History& history) {
     std::vector<Node*> leafNodes;
     trajectoryBuffer.clear();
     add_leaf_node(history, leafNodes);
@@ -44,6 +44,7 @@ void Search::run_iteration(std::vector<Position>& history) {
     auto out = nn.forward(planes);
     float* policy = out[0];
     float* wdl = out[1];
+    wdl[1] = 0.0f;
 
     softmax(policy, 1858);
     softmax(wdl, 3);
@@ -51,8 +52,8 @@ void Search::run_iteration(std::vector<Position>& history) {
     std::vector<Move> actions;
     std::vector<float> priors; 
 
-    if (history.back().turn()) {
-        MoveList<BLACK> list(history.back());
+    if (history.last().turn()) {
+        MoveList<BLACK> list(history.last());
         for (Move m : list) {
             actions.push_back(m);
             auto it = std::find(policy_index.begin(), policy_index.end(), mirror_uci(m.uci()));
@@ -60,7 +61,7 @@ void Search::run_iteration(std::vector<Position>& history) {
         };
     }
     else {
-        MoveList<WHITE> list(history.back());
+        MoveList<WHITE> list(history.last());
         for (Move m : list) {
             actions.push_back(m);
             auto it = std::find(policy_index.begin(), policy_index.end(), m.uci());
@@ -70,17 +71,19 @@ void Search::run_iteration(std::vector<Position>& history) {
 
     float value = wdl[0] - wdl[2];
     if (actions.empty()) {
-        value = -1;
+        if (history.last().checkers) {
+            value = -1.0f;
+        }
+        else {
+            value = 0.0f; 
+        }
     }
-    //else if (history.back().is_draw()) {
-    //    value = 0; 
-    //}
 
     expand_leaf_node(leafNodes.back(), actions, priors);
-    backup_leaf_node(history, value);    
+    backup_leaf_node(history, -value);    
 }
 
-void Search::add_leaf_node(std::vector<Position>& history, std::vector<Node*>& leafNodes) {
+void Search::add_leaf_node(History& history, std::vector<Node*>& leafNodes) {
     Node* curr = root;
     while (true) {
         trajectoryBuffer.emplace_back(curr);
@@ -91,14 +94,7 @@ void Search::add_leaf_node(std::vector<Position>& history, std::vector<Node*>& l
         curr = bestChild;
         Move action = curr->get_action();
 
-        history.emplace_back(history.back());
-
-        if (history.back().turn()) {
-            history.back().play<BLACK>(action);
-        }
-        else {
-            history.back().play<WHITE>(action);
-        }
+        history.push(action); 
     }
     if (!curr->is_added()) {
         curr->set_added(true);
@@ -119,22 +115,22 @@ void Search::expand_leaf_node(Node* leaf, std::vector<Move> actions, std::vector
     }
 }
 
-void Search::backup_leaf_node(std::vector<Position>& history, float value) {
+void Search::backup_leaf_node(History& history, float value) {
     for (auto it = trajectoryBuffer.rbegin(); it != trajectoryBuffer.rend(); ++it) {
         Node* node = *it;
         node->update_terminal(value);
         value = -value;
 
         if (node != root) {
-            history.pop_back();
+            history.pop();
         }
     }
 }
 
-void run_search_thread(Search* t, std::vector<Position>& history) {
+void run_search_thread(Search* t, History& history) {
     Node* root = new Node; 
     t->set_root_node(root);
-    for (int i = 0; i < 3000; i++) {
+    for (int i = 0; i < 100; i++) {
         t->run_iteration(history);
     }
 

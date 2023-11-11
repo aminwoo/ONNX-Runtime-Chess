@@ -10,51 +10,37 @@
 #include <chrono>
 #include <iostream>
 
-void position(std::istringstream& is, std::vector<Position>& history) {
+void position(std::istringstream& is, History& history) {
 	std::string token;
 	is >> token;
 
-	Position p;
-	history.clear(); 
+	history.reset(); 
 	if (token == "startpos") {
-		Position::set("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -", p);
-		history.push_back(p);
-
 		is >> token; 
 		while (is >> token) {
-			if (p.turn()) {
-				MoveList<BLACK> list(p);
+			if (history.last().turn()) {
+				MoveList<BLACK> list(history.last());
 				for (Move m : list) {
 					if (m.uci() == token) {
-						p.play<BLACK>(m);
+						history.push(m);
 						break;
 					}
 				}
 			}
 			else {
-				MoveList<WHITE> list(p);
+				MoveList<WHITE> list(history.last());
 				for (Move m : list) {
 					if (m.uci() == token) {
-						p.play<WHITE>(m);
+						history.push(m);
 						break;
 					}
 				}
 			}
-
-			history.push_back(p);
 		}
-	}
-	else if (token == "fen") {
-		std::string fen; 
-		while (is >> token) {
-			fen += token + " ";
-		}
-		Position::set(fen, p);
-		history.push_back(p);
 	}
 }
 
-void go(std::istringstream& is, Search* search_thread, std::vector<Position>& history) {
+void go(std::istringstream& is, Search* search_thread, History& history) {
 	run_search_thread(search_thread, history);
 }
 
@@ -63,7 +49,7 @@ int main() {
 	zobrist::initialise_zobrist_keys();
 
 	Search* search_thread = new Search;
-	std::vector<Position> history;
+	History history;
 
 	std::string token, cmd;
 

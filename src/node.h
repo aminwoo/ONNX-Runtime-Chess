@@ -23,7 +23,7 @@ public:
     Node* get_best_child();
 
     void update_terminal(float value) {
-        value_sum -= value;
+        value_sum += value;
         visits++;
     }
 

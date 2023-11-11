@@ -1,5 +1,0 @@
-/mnt/build/CMakeFiles/edit_cache.dir
-/mnt/build/CMakeFiles/rebuild_cache.dir
-/mnt/build/src/CMakeFiles/main.dir
-/mnt/build/src/CMakeFiles/edit_cache.dir
-/mnt/build/src/CMakeFiles/rebuild_cache.dir

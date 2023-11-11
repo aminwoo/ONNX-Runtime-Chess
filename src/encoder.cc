@@ -2,10 +2,10 @@
 
 #include <algorithm>
 
-InputPlanes EncodePositionForNN(std::vector<Position>& history) {
+InputPlanes EncodePositionForNN(History& history) {
     InputPlanes result(kAuxPlaneBase + 8);
 
-    const Position& position = history.back();
+    const Position& position = history.last();
     const bool we_are_black = position.turn();
 
     // "Legacy" input planes with:
@@ -32,7 +32,7 @@ InputPlanes EncodePositionForNN(std::vector<Position>& history) {
     result[kAuxPlaneBase + 7].SetAll();
 
         
-    int history_idx = history.size() - 1;
+    int history_idx = history.length() - 1;
     for (int i = 0; i < kMoveHistory; ++i, --history_idx) {
         const Position& position = history[std::max(0, history_idx)];
 
