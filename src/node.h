@@ -11,6 +11,7 @@ class Node {
 private:
     std::vector<std::shared_ptr<Node>> children;
     Move action;
+    float virtual_loss = 0.0f; 
     float value_sum = -1.0f;
     float prior = 0.0f;
     int visits = 0;
@@ -21,6 +22,20 @@ public:
     Node() {};
 
     Node* get_best_child();
+
+    float get_virtual_loss() {
+        return virtual_loss;
+    }
+
+    void apply_virtual_loss(float loss) {
+        virtual_loss += loss; 
+        visits++; 
+    }
+
+    void undo_virtual_loss(float loss) {
+        virtual_loss -= loss; 
+        visits--;
+    }
 
     void update_terminal(float value) {
         value_sum += value;

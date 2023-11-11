@@ -8,8 +8,10 @@
 
 #include <sstream>
 #include <chrono>
+#include <variant>
 #include <iostream>
 
+// This code needs refactoring 
 void position(std::istringstream& is, History& history) {
 	std::string token;
 	is >> token;
@@ -18,6 +20,7 @@ void position(std::istringstream& is, History& history) {
 	if (token == "startpos") {
 		is >> token; 
 		while (is >> token) {
+			// Templated functions leads to duplicated code 
 			if (history.last().turn()) {
 				MoveList<BLACK> list(history.last());
 				for (Move m : list) {

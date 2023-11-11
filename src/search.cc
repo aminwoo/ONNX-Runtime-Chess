@@ -90,10 +90,10 @@ void Search::add_leaf_node(History& history, std::vector<Node*>& leafNodes) {
         if (!curr->get_expanded()) {
             break;
         }
-        Node* bestChild = curr->get_best_child();
-        curr = bestChild;
+        Node* best_child = curr->get_best_child();
+        best_child->apply_virtual_loss(1.0f); 
+        curr = best_child;
         Move action = curr->get_action();
-
         history.push(action); 
     }
     if (!curr->is_added()) {
@@ -113,6 +113,8 @@ void Search::expand_leaf_node(Node* leaf, std::vector<Move> actions, std::vector
             leaf->set_expanded(true);
         }
     }
+    //Node* best_child = leaf->get_best_child();
+    //best_child->apply_virtual_loss(1.0f); 
 }
 
 void Search::backup_leaf_node(History& history, float value) {
@@ -123,6 +125,7 @@ void Search::backup_leaf_node(History& history, float value) {
 
         if (node != root) {
             history.pop();
+            node->undo_virtual_loss(1.0f); 
         }
     }
 }
@@ -130,7 +133,7 @@ void Search::backup_leaf_node(History& history, float value) {
 void run_search_thread(Search* t, History& history) {
     Node* root = new Node; 
     t->set_root_node(root);
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 1000; i++) {
         t->run_iteration(history);
     }
 

@@ -29,7 +29,7 @@ std::vector<float*> Network::forward(InputPlanes planes) {
         }
     }
 
-    auto memory_info = Ort::MemoryInfo::CreateCpu(OrtDeviceAllocator, OrtMemTypeCPU);
+    Ort::MemoryInfo memory_info = Ort::MemoryInfo::CreateCpu(OrtDeviceAllocator, OrtMemTypeCPU);
     Ort::Value input_tensor = Ort::Value::CreateTensor<float>(
         memory_info,
         input_data.data(),
