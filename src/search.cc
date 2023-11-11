@@ -36,9 +36,9 @@ Node* Search::get_root_node() {
 }
 
 void Search::run_iteration(History& history) {
-    std::vector<Node*> leafNodes;
+    std::vector<Node*> leaf_nodes;
     trajectoryBuffer.clear();
-    add_leaf_node(history, leafNodes);
+    add_leaf_node(history, leaf_nodes);
 
     InputPlanes planes = EncodePositionForNN(history);
     auto out = nn.forward(planes);
@@ -79,11 +79,11 @@ void Search::run_iteration(History& history) {
         }
     }
 
-    expand_leaf_node(leafNodes.back(), actions, priors);
+    expand_leaf_node(leaf_nodes.back(), actions, priors);
     backup_leaf_node(history, -value);    
 }
 
-void Search::add_leaf_node(History& history, std::vector<Node*>& leafNodes) {
+void Search::add_leaf_node(History& history, std::vector<Node*>& leaf_nodes) {
     Node* curr = root;
     while (true) {
         trajectoryBuffer.emplace_back(curr);
@@ -99,7 +99,7 @@ void Search::add_leaf_node(History& history, std::vector<Node*>& leafNodes) {
     if (!curr->is_added()) {
         curr->set_added(true);
     }
-    leafNodes.emplace_back(curr);
+    leaf_nodes.emplace_back(curr);
 }
 
 void Search::expand_leaf_node(Node* leaf, std::vector<Move> actions, std::vector<float> priors) {
@@ -113,8 +113,6 @@ void Search::expand_leaf_node(Node* leaf, std::vector<Move> actions, std::vector
             leaf->set_expanded(true);
         }
     }
-    //Node* best_child = leaf->get_best_child();
-    //best_child->apply_virtual_loss(1.0f); 
 }
 
 void Search::backup_leaf_node(History& history, float value) {

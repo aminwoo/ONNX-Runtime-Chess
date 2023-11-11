@@ -20,7 +20,7 @@ public:
 
     Node* get_root_node();
     void set_root_node(Node* node);
-    void add_leaf_node(History& history, std::vector<Node*>& leafNodes);
+    void add_leaf_node(History& history, std::vector<Node*>& leaf_nodes);
     void expand_leaf_node(Node* leaf, std::vector<Move> actions, std::vector<float> priors);
     void backup_leaf_node(History& history, float value);
     void run_iteration(History& history);
