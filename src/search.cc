@@ -134,7 +134,7 @@ void Search::backup_leaf_node(std::vector<Position>& history, float value) {
 void run_search_thread(Search* t, std::vector<Position>& history) {
     Node* root = new Node; 
     t->set_root_node(root);
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 3000; i++) {
         t->run_iteration(history);
     }
 
