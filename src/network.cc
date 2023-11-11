@@ -2,9 +2,19 @@
 
 Network::Network() : session(nullptr) {
     Ort::SessionOptions session_options;
+
+    OrtTensorRTProviderOptions options{};
+    options.device_id = 0; // code the device id needed
+    options.trt_max_workspace_size = 2ull * 1024 * 1024 * 1024; // same as default yet prevents warnings in console
+    options.trt_max_partition_iterations = 1000;                // same as default yet prevents warnings in console
+    options.trt_min_subgraph_size = 1;                          // same as default yet prevents warnings in console
+    options.trt_engine_cache_enable = 1;
+    options.trt_engine_cache_path = ".";
+    session_options.AppendExecutionProvider_TensorRT(options);
+
     int device_id = 0;
-    Ort::ThrowOnError(OrtSessionOptionsAppendExecutionProvider_Tensorrt(session_options, device_id));
     Ort::ThrowOnError(OrtSessionOptionsAppendExecutionProvider_CUDA(session_options, device_id));
+    
     auto model_path = "models/model.onnx";
     session = Ort::Session(env, model_path, session_options);
     forward(InputPlanes(112)); 
