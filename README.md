@@ -7,6 +7,8 @@ cmake -B build
 cmake --build build --config Release --parallel
 ```
 
+Once built, the application should be in /build/src. 
+
 ## Building TensorRT Docker Image
 
 ```

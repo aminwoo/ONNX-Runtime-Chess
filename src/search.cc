@@ -78,6 +78,9 @@ void Search::run_iteration(History& history) {
             value = 0.0f; 
         }
     }
+    else if (history.three_fold()) {
+        value = 0.0f; 
+    }
 
     expand_leaf_node(leaf_nodes.back(), actions, priors);
     backup_leaf_node(history, -value);    
@@ -131,7 +134,7 @@ void Search::backup_leaf_node(History& history, float value) {
 void run_search_thread(Search* t, History& history) {
     Node* root = new Node; 
     t->set_root_node(root);
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 2000; i++) {
         t->run_iteration(history);
     }
 

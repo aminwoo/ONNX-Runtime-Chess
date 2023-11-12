@@ -146,3 +146,18 @@ void History::reset() {
 	Position::set("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -", p);
 	positions_.emplace_back(p);
 }
+
+bool History::three_fold() {
+	int repetitions = 0;
+
+	for (auto it = positions_.rbegin() + 1; it != positions_.rend(); ++it) {
+		if (it->get_hash() == last().get_hash()) {
+			repetitions++; 
+			if (repetitions >= 2) {
+				return true; 
+			}
+		}
+	}
+
+	return false; 
+}

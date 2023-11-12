@@ -54,7 +54,7 @@ InputPlanes EncodePositionForNN(History& history) {
         result[base + 10].mask = position.all_pieces(them) & position.bitboard_of(them, QUEEN);
         result[base + 11].mask = position.all_pieces(them) & position.bitboard_of(them, KING);
 
-        for (int j = 0; j < history_idx; j++) {
+        for (int j = history_idx - 1; j >= 0; j--) {
             if (history[j].get_hash() == position.get_hash()) {
                 result[base + 12].SetAll();
                 break; 

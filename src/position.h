@@ -707,4 +707,6 @@ public:
 	void pop() { positions_.pop_back(); }
 
 	void reset();
+
+	bool three_fold(); 
 };
