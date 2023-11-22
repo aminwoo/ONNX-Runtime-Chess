@@ -78,7 +78,7 @@ void Search::run_iteration(History& history) {
             value = 0.0f; 
         }
     }
-    else if (history.three_fold()) {
+    else if (history.is_three_fold()) {
         value = 0.0f; 
     }
 
@@ -134,7 +134,7 @@ void Search::backup_leaf_node(History& history, float value) {
 void run_search_thread(Search* t, History& history) {
     Node* root = new Node; 
     t->set_root_node(root);
-    for (int i = 0; i < 2000; i++) {
+    for (int i = 0; i < 10000; i++) {
         t->run_iteration(history);
     }
 
@@ -143,10 +143,12 @@ void run_search_thread(Search* t, History& history) {
     std::shared_ptr<Node> most_visited; 
     
     for (size_t i = 0; i < children.size(); i++) {
+        std::cout << children[i]->get_action() << " " << children[i]->get_visits() << " " << children[i]->Q() << std::endl; 
         if (children[i]->get_visits() > most_visits) {
             most_visits = children[i]->get_visits();
             most_visited = children[i]; 
         }
     }
     std::cout << "bestmove " << most_visited->get_action() << std::endl;
+    std::cout << "Q score " << root->Q() << std::endl; 
 }

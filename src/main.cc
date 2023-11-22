@@ -61,6 +61,7 @@ int main() {
 			cmd = "quit";
 
 		std::istringstream is(cmd);
+		std::cout << cmd << std::endl; 
 
 		token.clear(); 
 		is >> std::skipws >> token;

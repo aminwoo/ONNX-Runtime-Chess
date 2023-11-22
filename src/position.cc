@@ -138,6 +138,24 @@ void History::push(Move m) {
 	else {
 		last().play<WHITE>(m);
 	}
+
+	if (three_fold.size() && three_fold.back()) {
+		three_fold.push_back(true);
+	}
+	else {
+		int repetitions = 0;
+
+		for (auto it = positions_.rbegin() + 1; it != positions_.rend(); ++it) {
+			if (it->get_hash() == last().get_hash()) {
+				repetitions++; 
+				if (repetitions >= 2) {
+					three_fold.push_back(true); 
+					return; 
+				}
+			}
+		}
+		three_fold.push_back(false); 
+	} 
 }
 
 void History::reset() {
@@ -145,19 +163,9 @@ void History::reset() {
 	Position p;
 	Position::set("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -", p);
 	positions_.emplace_back(p);
+	three_fold.push_back(false); 
 }
 
-bool History::three_fold() {
-	int repetitions = 0;
-
-	for (auto it = positions_.rbegin() + 1; it != positions_.rend(); ++it) {
-		if (it->get_hash() == last().get_hash()) {
-			repetitions++; 
-			if (repetitions >= 2) {
-				return true; 
-			}
-		}
-	}
-
-	return false; 
+bool History::is_three_fold() {
+	return three_fold.back(); 
 }

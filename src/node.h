@@ -6,7 +6,6 @@
 #include <memory>
 #include <vector>
 
-
 class Node {
 private:
     std::vector<std::shared_ptr<Node>> children;

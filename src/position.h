@@ -692,6 +692,7 @@ private:
 class History {
 private:
 	std::vector<Position> positions_; 
+	std::vector<bool> three_fold;
 public:
 	History() = default; 
 	History(const History& other) = default; 
@@ -704,9 +705,9 @@ public:
 
 	void push(Move m);
 
-	void pop() { positions_.pop_back(); }
+	void pop() { positions_.pop_back(); three_fold.pop_back(); }
 
 	void reset();
 
-	bool three_fold(); 
+	bool is_three_fold(); 
 };
